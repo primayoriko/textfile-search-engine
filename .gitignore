@@ -3,6 +3,7 @@
 *.pdf
 *.pyc
 *.exe
+s.bat
 
 .vscode/
 __pycache__/

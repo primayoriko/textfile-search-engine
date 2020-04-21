@@ -4,50 +4,87 @@ class Matcher:
     def __init__(self, text, pattern):
         self.text = text
         self.pattern = pattern
-        self.solution = []
+        self.textLength = len(self.text)
+        self.patLength = len(self.pattern)
 
     def changeText(self, text):
         self.text = text
+        return self
 
     def changePattern(self, pattern):
         self.pattern = pattern
+        return self
 
-    def solver(self):
+    def solver(self, findAll = True):
         pass
 
     def showResIdx(self):
         return self.resultIdx
+
+    def writeSolution(self):
+        for i in self.resultIdx:
+            print(i + '. ' + self.text[i:i+self.patLength])
 
 class BooyerMooreMatcher(Matcher):
     def __init__(self, text, pattern):
         super().__init__(text, pattern)
         
     def initLookbackArray(self):
-        self.lookback = [-1] * 256
-        for i in range(len(self.pattern)):
-            self.lookback[ord(self.pattern[i])] = i
+        # Find last occurence of a char in the pattern, if not found then -1
+        lookback = [-1] * 256
+        for i in range(self.patLength):
+            lookback[ord(self.pattern[i])] = i
+        return lookback
 
-    def solver(self):
+    def solver(self, findAll = True):
         self.resultIdx = []
-        self.initLookbackArray()
-        i, j = len(self.pattern)-1, len(self.pattern)-1
-        while(i<len(self.pattern)):
+        lookback = self.initLookbackArray()
+        i, j = self.patLength - 1, self.patLength - 1
+        while(i < self.textLength):
             if(self.pattern[j] == self.text[i]):
                 if(j == 0):
                     self.resultIdx.append(i)
-                    i, j = i+len(self.pattern), len(self.pattern)-1
+                    if(not findAll):
+                        break
+                    i, j = i + self.patLength, self.patLength - 1
                 else:
-                    i, j = i-1, j-1
+                    i, j = i - 1, j - 1
             else:
-                lookback_val = self.lookback[ord(self.text[i])]
-                if(lookback_val < j and lookback_val!=-1):
+                lookback_val = lookback[ord(self.text[i])]
+                if(lookback_val < j and lookback_val != -1):
                     j = lookback_val
                 else:
-                    i, j = i+len(self.pattern), len(self.pattern)-1
+                    i, j = i + self.patLength, self.patLength - 1
+        return self.resultIdx
 
 class KMPMatcher(Matcher):
     def __init__(self, text, pattern):
-        super().__init__(text, pattern)        
+        super().__init__(text, pattern)  
 
-    def solver(self):
-        return super().solver()
+    def initKMPBorder(self):
+        KMPBorder = [-1] * self.patLength
+        i, j = 0, 0
+        while(i < self.patLength):
+            pass
+        return KMPBorder
+
+    def solver(self, findAll = True):
+        self.resultIdx = []
+        KMPBorder = self.initKMPBorder()
+        i, j = 0, 0
+        while(i < self.textLength):
+            if(self.pattern[j] == self.text[i]):
+                if(j == self.patLength - 1):
+                    self.resultIdx.append(i - self.patLength + 1)
+                    if(not findAll):
+                        break
+                    i, j = i + 1, KMPBorder(j) 
+                else:
+                    i, j = i + 1, j + 1
+            else:
+                if(j > 0):
+                    j = KMPBorder[j - 1]
+                else:
+                    i += 1
+        return self.resultIdx
+
