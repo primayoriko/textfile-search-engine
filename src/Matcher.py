@@ -25,7 +25,7 @@ class Matcher:
         for i in self.resultIdx:
             print(i + '. ' + self.text[i:i+self.patLength])
 
-class BooyerMooreMatcher(Matcher):
+class BoyerMooreMatcher(Matcher):
     def __init__(self, text, pattern):
         super().__init__(text, pattern)
         

@@ -6,9 +6,9 @@ class Parser:
         self.filenameList = filenameList
 
     def parse(self, filename):
-
+        
         pass
 
     def matchPattern(self, method):
-        
+
         pass

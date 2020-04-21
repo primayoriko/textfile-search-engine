@@ -4,8 +4,34 @@ import sys
 
 app = Flask(__name__)
 
-@app.route('/')
-def loadMainPage():
-    return render_template('layout/mainpage.html')
-    # return {"msg" : "hello kitty"}
+@app.route('/', methods=['GET', 'POST'])
+def handlerEvent():
+    if request.method == 'GET':
+        return render_template('mainpage.html')
+    elif request.method == 'POST':
+        algorithm = request.form['algorithm']
+        keyword = request.form['keyword']
+        filesData = request.files.getlist('files')
+        files = {}
+        for x in filesData:
+            y = x.read(); y = y.decode("ASCII")
+            y = y.split("\r"); y = " ".join(y)
+            y = y.split("\n"); y = "".join(y)
+            y = y.split("\t"); y = "".join(y)
+            files[x.filename] = y
+        return files
+
+
+
+        # response = {"algo" : request.form['algo'], "keyword" : request.form['keyword']}
+        # i = 0
+        # for x in request.files['attachment']:
+        #     i += 1
+        #     response[x.filename] = x.read()
+        # return  response
+        # x = ""
+        
+        # for i in f:
+        #     x = x + (i.filename)
+        # return x
 

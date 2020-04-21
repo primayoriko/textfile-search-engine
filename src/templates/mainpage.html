@@ -1,0 +1,35 @@
+<!doctype html>
+<title>{% block title %} Info Extraction App{% endblock %} </title>
+<link rel="stylesheet" href="{{ url_for('static', filename='mainstyle.css') }}">
+
+<main class="mainApp">
+    <header>
+        <h1>Info Extraction App</h1>
+    </header>
+
+    <form method="POST" action="/" enctype="multipart/form-data">
+        <p>
+            <label>File(s): </label>
+            <!-- <button>Browse</button> -->
+            <input type="file" name="files" id="files" multiple>
+
+        </p>
+        <p>
+            <label>Keyword: </label>
+            <input type="text" name="keyword" id="keyword">
+        </p>
+        <p>
+            <label>Algorithm: </label>
+            <p><input type="radio" name="algorithm" id="BM" value="BM"> Boyer-Moore</p>
+            <p><input type="radio" name="algorithm" id="KMP" value="KMP"> KMP</p>
+            <p><input type="radio" name="algorithm" id="Regex" value="Regex"> Regex</p>
+        </p>
+        <!-- <input type="file" name="attachment" id="attachment" multiple> -->
+        <p><button>Search!</button></p>
+    </form>
+
+    <main>
+        <div>
+        </div>
+    </main>
+</main>
