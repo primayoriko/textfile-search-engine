@@ -6,6 +6,7 @@ class Matcher:
         self.pattern = pattern
         self.textLength = len(self.text)
         self.patLength = len(self.pattern)
+        self.resultIdx = []
 
     def changeText(self, text):
         self.text = text
@@ -20,6 +21,9 @@ class Matcher:
 
     def showResIdx(self):
         return self.resultIdx
+
+    def hasPattern(self):
+        return len(self.resultIdx) > 0
 
     def writeSolution(self):
         for i in self.resultIdx:

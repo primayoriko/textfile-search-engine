@@ -1,35 +1,49 @@
 <!doctype html>
-<title>{% block title %} Info Extraction App{% endblock %} </title>
+<title>{% block title %} Info Extraction App - Result{% endblock %} </title>
 <link rel="stylesheet" href="{{ url_for('static', filename='mainstyle.css') }}">
 
 <main class="mainApp">
     <header>
+        {% if not init %}
+        <h2>Info Extraction App</h2>
+        <h1>Result</h1>
+        {% else %}
         <h1>Info Extraction App</h1>
+        {% endif %}
     </header>
 
     <form method="POST" action="/" enctype="multipart/form-data">
         <p>
             <label>File(s): </label>
             <!-- <button>Browse</button> -->
-            <input type="file" name="files" id="files" multiple>
+            <input type="file" name="files" id="files" multiple required>
 
         </p>
         <p>
             <label>Keyword: </label>
-            <input type="text" name="keyword" id="keyword">
+            <input type="text" name="keyword" id="keyword" required>
         </p>
         <p>
             <label>Algorithm: </label>
-            <p><input type="radio" name="algorithm" id="BM" value="BM"> Boyer-Moore</p>
+            <p><input type="radio" name="algorithm" id="BM" value="BM" required> Boyer-Moore</p>
             <p><input type="radio" name="algorithm" id="KMP" value="KMP"> KMP</p>
             <p><input type="radio" name="algorithm" id="Regex" value="Regex"> Regex</p>
         </p>
-        <!-- <input type="file" name="attachment" id="attachment" multiple> -->
         <p><button>Search!</button></p>
     </form>
 
+    {% if not init %}
     <main>
+        {% if nResult != 0 %}
+        <p> Hasil : {{ nResult }} | Waktu Pencarian : {{ elapsedTime }}</p>
+        {% for file in result %}
         <div>
+
         </div>
+        {% endfor %} {% else %}
+        <p> Tidak ada hasil ditemukan </p>
+        {% endif %}
     </main>
+    {% endif %}
+
 </main>
