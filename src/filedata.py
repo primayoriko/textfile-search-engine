@@ -6,23 +6,25 @@ class FileData:
         self.filename = filename
         self.text = text
         self.parsedText = text.split(". ")
-        self.jumlah = 0
-        self.tanggal = 0
 
     def fetchInfo(self, pattern, method = "KMP"):
-        matcher = None
+        result, matcher = [], None
         if(method == "KMP"):
-
-            pass
+            matcher = KMPMatcher("", pattern)
         elif(method == "BM"):
-
-            pass
+            matcher = BoyerMooreMatcher("", pattern)
         elif(method == "Regex"):
 
             pass
 
-        if(matcher != None):
+        for i in self.parsedText:
+            matcher.changeText(i)
+            matcher.solver()
+            if(matcher.hasPattern()):
+                result.append(i)
 
+        if(len(result) != 0):
+            
             return self
             
 

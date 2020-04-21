@@ -32,6 +32,7 @@ def handlerEvent():
         print(nResult)
 
         return render_template('mainpage.html', init = False, result = result, nResult = nResult, elapsedTime = elapsedTime)
+        
         # response = {"algo" : request.form['algo'], "keyword" : request.form['keyword']}
         # i = 0
         # for x in request.files['attachment']:
@@ -39,8 +40,3 @@ def handlerEvent():
         #     response[x.filename] = x.read()
         # return  response
         # x = ""
-        
-        # for i in f:
-        #     x = x + (i.filename)
-        # return x
-

@@ -1,7 +1,7 @@
 import re, sys
 
 class Matcher:
-    def __init__(self, text, pattern):
+    def __init__(self, text = "", pattern = "-"):
         self.text = text
         self.pattern = pattern
         self.textLength = len(self.text)
@@ -30,8 +30,8 @@ class Matcher:
             print(i + '. ' + self.text[i:i+self.patLength])
 
 class BoyerMooreMatcher(Matcher):
-    def __init__(self, text, pattern):
-        super().__init__(text, pattern)
+    def __init__(self, text = "", pattern = "-"):
+        super().__init__(text=text, pattern=pattern)
         
     def initLookbackArray(self):
         # Find last occurence of a char in the pattern, if not found then -1
@@ -62,8 +62,8 @@ class BoyerMooreMatcher(Matcher):
         return self.resultIdx
 
 class KMPMatcher(Matcher):
-    def __init__(self, text, pattern):
-        super().__init__(text, pattern)  
+    def __init__(self, text = "", pattern = "-"):
+        super().__init__(text=text, pattern=pattern)
 
     def initKMPBorder(self):
         KMPBorder = [-1] * self.patLength
@@ -91,4 +91,11 @@ class KMPMatcher(Matcher):
                 else:
                     i += 1
         return self.resultIdx
+
+class RegexMatcher(Matcher):
+    def __init__(self, text='', pattern='-'):
+        super().__init__(text=text, pattern=pattern)
+
+    def solver(self):
+        pass
 
