@@ -22,15 +22,16 @@ def handlerEvent():
             y = y.split("\t"); y = "".join(y)
             files[x.filename] = y
         
-        result = []
-        # for x, y in files.items():
-        #     newFile = FileData(x, y)
-        #     result.append(newFile.fetchInfo(keyword, algorithm))
-        # result = list(filter(lambda iter : iter is not None, result))
-        nResult = len(result)
-        elapsedTime = 0
-        print(nResult)
+        result, nResult, elapsedTime = [], 0, 0
+        for x, y in files.items():
+            newFile = FileData(x, y)
+            newFile = newFile.fetchInfo(keyword, algorithm)
+            if(newFile is not None):
+                result.append(newFile)
+                nResult += newFile.getResultNum()
 
+        # result = list(filter(lambda iter : iter is not None, result))
+        # elapsedTime = 0
         return render_template('mainpage.html', init = False, result = result, nResult = nResult, elapsedTime = elapsedTime)
         
         # response = {"algo" : request.form['algo'], "keyword" : request.form['keyword']}

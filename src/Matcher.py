@@ -16,8 +16,25 @@ class Matcher:
         self.pattern = pattern
         return self
 
-    def solver(self, findAll = True):
+    def getTanggal(self):
+        return self.tanggal
+
+    def getJumlah(self):
+        return self.jumlah
+
+    def findPattern(self, findAll = True):
         pass
+
+    def findTanggal(self):
+        return self.tanggal
+
+    def findJumlah(self):
+        return self.jumlah
+
+    def solver(self, findAll = True):
+        self.findPattern(findAll)
+        self.findJumlah()
+        self.findTanggal()
 
     def showResIdx(self):
         return self.resultIdx
@@ -40,7 +57,7 @@ class BoyerMooreMatcher(Matcher):
             lookback[ord(self.pattern[i])] = i
         return lookback
 
-    def solver(self, findAll = True):
+    def findPattern(self, findAll = True):
         self.resultIdx = []
         lookback = self.initLookbackArray()
         i, j = self.patLength - 1, self.patLength - 1
@@ -72,7 +89,7 @@ class KMPMatcher(Matcher):
             pass
         return KMPBorder
 
-    def solver(self, findAll = True):
+    def findPattern(self, findAll = True):
         self.resultIdx = []
         KMPBorder = self.initKMPBorder()
         i, j = 0, 0
@@ -96,6 +113,7 @@ class RegexMatcher(Matcher):
     def __init__(self, text='', pattern='-'):
         super().__init__(text=text, pattern=pattern)
 
-    def solver(self):
-        pass
+    def findPattern(self, findAll = True):
+        self.resultIdx = re.findall(pattern, text)
+        return self.resultIdx
 
