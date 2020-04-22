@@ -164,7 +164,7 @@ class RegexMatcher(Matcher):
         super().__init__(text=text, pattern=pattern)
 
     def findPattern(self, findAll = True):
-        self.resultIdx = re.findall(pattern, text)
+        self.resultIdx = re.findall(self.pattern, self.text)
         return self.resultIdx
 
 if __name__ == '__main__':

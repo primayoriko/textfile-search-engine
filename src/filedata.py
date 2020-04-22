@@ -50,7 +50,4 @@ class FileData:
 
     def getFilename(self):
         return self.filename
-            
-
-    # def matchPattern(self, pattern, method = "KMP"):
         
