@@ -10,22 +10,29 @@ class Matcher:
 
     def changeText(self, text):
         self.text = text
+        self.textLength = len(text)
         return self
 
     def changePattern(self, pattern):
         self.pattern = pattern
+        self.patLength = len(pattern)
         return self
 
     def getFirstTanggal(self):
+        if(len(self.tanggal) == 0):
+            return '-'
         return self.tanggal[0]
 
     def getFirstJumlah(self):
+        if(len(self.jumlah) == 0):
+            return '-'
         return self.jumlah[0]
 
     def findPattern(self, findAll = True):
         pass
 
     def findTanggal(self, findAll = True):
+        self.tanggal = []
         tanggalType = ['\d\d?[-/]\d?\d[-/]\d{4}','\d{4}[-/]\d?\d[-/]\d\d?','\d\d?[-/]\d?\d[-/]\d\d',\
             '[Kk]emarin','\d\d[-/]\d?\d[-/]\d\d?', 
             '[Hh]ari ini', '[Kk]emarin lusa', '[Ss]enin', '[Ss]elasa', '[Rr]abu', '[Kk]amis',\
@@ -36,10 +43,12 @@ class Matcher:
                 break
         if(findAll):
             return self.tanggal
+        if(len(self.tanggal) == 0):
+            return '-'
         return self.tanggal[0]
 
     def findJumlah(self, findAll = True):
-
+        self.jumlah = []
         jumlahType = ['\d+ [Oo]rang', '\d+ [Kk]orban', '\d+ [Pp]enderita', '\d+ [Jj]iwa']
         for pat in jumlahType:
             self.jumlah = re.findall(pat, text)
@@ -48,6 +57,8 @@ class Matcher:
                 break
         if(findAll):
             return self.jumlah
+        if(len(self.jumlah) == 0):
+            return '-'
         return self.jumlah[0]
 
     def solver(self, findAll = True):
@@ -55,6 +66,8 @@ class Matcher:
         if(self.hasPattern()):
             b = self.findJumlah(findAll)
             c = self.findTanggal(findAll)
+        else:
+            b, c = None, None
         return a, b, c
 
     def showResIdx(self):
@@ -63,10 +76,10 @@ class Matcher:
     def hasPattern(self):
         return len(self.resultIdx) > 0
 
-    def writeSolution(self):
+    def printSolution(self):
         # for debugging 
         for i in self.resultIdx:
-            print(i + '. ' + self.text[i:i+self.patLength])
+            print(str(i) + '. ' + self.text[i:i+self.patLength])
 
 class BoyerMooreMatcher(Matcher):
     def __init__(self, text = "", pattern = "-"):
@@ -81,6 +94,8 @@ class BoyerMooreMatcher(Matcher):
 
     def findPattern(self, findAll = True):
         self.resultIdx = []
+        if(self.patLength > self.textLength):
+            return self.resultIdx
         lookback = self.initLookbackArray()
         i, j = self.patLength - 1, self.patLength - 1
         while(i < self.textLength):
@@ -94,10 +109,12 @@ class BoyerMooreMatcher(Matcher):
                     i, j = i - 1, j - 1
             else:
                 lookback_val = lookback[ord(self.text[i])]
-                if(lookback_val < j and lookback_val != -1):
-                    j = lookback_val
-                else:
-                    i, j = i + self.patLength, self.patLength - 1
+                i = i + self.patLength - min(j, 1 + lookback_val)
+                j = self.patLength - 1
+                # if(lookback_val < j and lookback_val != -1):
+                #     j = lookback_val
+                # else:
+                #     i, j = i + self.patLength, self.patLength - 1
         return self.resultIdx
 
 class KMPMatcher(Matcher):
@@ -113,6 +130,8 @@ class KMPMatcher(Matcher):
 
     def findPattern(self, findAll = True):
         self.resultIdx = []
+        if(self.patLength > self.textLength):
+            return self.resultIdx
         KMPBorder = self.initKMPBorder()
         i, j = 0, 0
         while(i < self.textLength):
@@ -138,4 +157,19 @@ class RegexMatcher(Matcher):
     def findPattern(self, findAll = True):
         self.resultIdx = re.findall(pattern, text)
         return self.resultIdx
+
+if __name__ == '__main__':
+    pattern = "abc"
+    text = "reabcasdsabcasdaabcb"
+    matcher = BoyerMooreMatcher(text = text, pattern=pattern)
+    matcher.solver()
+    # print(len)
+    print(matcher.resultIdx)
+    print(matcher.initLookbackArray())
+    matcher.printSolution()
+    matcher2 = RegexMatcher(text = text, pattern=pattern)
+    matcher2.solver()
+    # print(len)
+    print(matcher2.resultIdx)
+    pass
 
