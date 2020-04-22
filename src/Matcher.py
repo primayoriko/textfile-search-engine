@@ -38,7 +38,7 @@ class Matcher:
             '[Hh]ari ini', '[Kk]emarin lusa', '[Ss]enin', '[Ss]elasa', '[Rr]abu', '[Kk]amis',\
             '[Jj]um\'?at', '[Ss]abtu', '[Mm]inggu']
         for pat in tanggalType:
-            self.tanggal = re.findall(pat, text)
+            self.tanggal = re.findall(pat, self.text)
             if(len(self.tanggal) != 0):
                 break
         if(findAll):
@@ -49,9 +49,11 @@ class Matcher:
 
     def findJumlah(self, findAll = True):
         self.jumlah = []
+        # jumlahType = ['\d{1,3}[.,](\d{3}[.,])*\d{3} [Oo]rang', '(\d{1,3}[.,](\d{3}[.,])*\d{3}|\d+) [Kk]orban',\
+        #     '(\d{1,3}[.,](\d{3}[.,])*\d{3}|\d+) [Pp]enderita', '(\d{1,3}[.,](\d{3}[.,])*\d{3}|\d+) [Jj]iwa']
         jumlahType = ['\d+ [Oo]rang', '\d+ [Kk]orban', '\d+ [Pp]enderita', '\d+ [Jj]iwa']
         for pat in jumlahType:
-            self.jumlah = re.findall(pat, text)
+            self.jumlah = re.findall(pat, self.text)
             if(len(self.jumlah) != 0):
                 self.jumlah =  re.findall('\d+ ', self.jumlah[0])
                 break
@@ -178,5 +180,9 @@ if __name__ == '__main__':
     matcher2.solver()
     # print(len)
     print(matcher2.resultIdx)
+    matcher3 = RegexMatcher(text = text, pattern=pattern)
+    matcher3.solver()
+    # print(len)
+    print(matcher3.resultIdx)
     pass
 

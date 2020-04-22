@@ -30,24 +30,26 @@ class FileData:
             matcher = BoyerMooreMatcher(pattern = pattern)
         elif(method == "Regex"):
             matcher = RegexMatcher(pattern = pattern)
-            pass
 
         for i in self.parsedText:
             matcher.changeText(i)
             matcher.solver()
             if(matcher.hasPattern()):
-                newEntry = FileData.ResultEntry(i, matcher.getJumlah(), matcher.getTanggal())
+                newEntry = FileData.ResultEntry(i, matcher.getFirstJumlah(), matcher.getFirstTanggal())
                 self.result.append(newEntry)
 
         self.nResult = len(self.result)
         if(self.nResult != 0):
             return self
 
-    def getResultText(self):
+    def getResultEntry(self):
         return self.result
 
     def getResultNum(self):
         return self.nResult
+
+    def getFilename(self):
+        return self.filename
             
 
     # def matchPattern(self, pattern, method = "KMP"):
