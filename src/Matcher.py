@@ -123,9 +123,16 @@ class KMPMatcher(Matcher):
 
     def initKMPBorder(self):
         KMPBorder = [-1] * self.patLength
-        i, j = 0, 0
+        KMPBorder[0] = 0
+        i, j = 1, 0
         while(i < self.patLength):
-            pass
+            if(self.pattern[i] == self.pattern[j]):
+                KMPBorder[i] = j + 1
+            elif(j > 0):
+                j = KMPBorder[j - 1]
+            else:
+                KMPBorder[i]= 0
+                i += 1
         return KMPBorder
 
     def findPattern(self, findAll = True):
@@ -140,7 +147,7 @@ class KMPMatcher(Matcher):
                     self.resultIdx.append(i - self.patLength + 1)
                     if(not findAll):
                         break
-                    i, j = i + 1, KMPBorder(j) 
+                    i, j = i + 1, KMPBorder[j] 
                 else:
                     i, j = i + 1, j + 1
             else:
@@ -165,9 +172,9 @@ if __name__ == '__main__':
     matcher.solver()
     # print(len)
     print(matcher.resultIdx)
-    print(matcher.initLookbackArray())
+    # print(matcher.initLookbackArray())
     matcher.printSolution()
-    matcher2 = RegexMatcher(text = text, pattern=pattern)
+    matcher2 = KMPMatcher(text = text, pattern=pattern)
     matcher2.solver()
     # print(len)
     print(matcher2.resultIdx)
