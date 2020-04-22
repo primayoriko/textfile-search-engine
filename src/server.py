@@ -1,6 +1,6 @@
 from filedata import *
 from flask import Flask, flash, g, redirect, render_template, request, session, url_for
-import sys
+import sys, re
 
 app = Flask(__name__)
 
@@ -17,9 +17,12 @@ def handlerEvent():
         files = {}
         for x in filesData:
             y = x.read(); y = y.decode("ASCII")
-            y = y.split("\r"); y = " ".join(y)
-            y = y.split("\n"); y = "".join(y)
-            y = y.split("\t"); y = "".join(y)
+            # y = y.split("\r"); y = " ".join(y)
+            # y = y.split("\n"); y = "".join(y)
+            # y = y.split("\t"); y = "".join(y)
+            y = re.sub("\r", " ", y)
+            y = re.sub("\n", "", y)
+            y = re.sub("\t", "", y)
             files[x.filename] = y
         
         result, nResult, elapsedTime = [], 0, 0

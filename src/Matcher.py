@@ -16,25 +16,46 @@ class Matcher:
         self.pattern = pattern
         return self
 
-    def getTanggal(self):
-        return self.tanggal
+    def getFirstTanggal(self):
+        return self.tanggal[0]
 
-    def getJumlah(self):
-        return self.jumlah
+    def getFirstJumlah(self):
+        return self.jumlah[0]
 
     def findPattern(self, findAll = True):
         pass
 
-    def findTanggal(self):
-        return self.tanggal
+    def findTanggal(self, findAll = True):
+        tanggalType = ['\d\d?[-/]\d?\d[-/]\d{4}','\d{4}[-/]\d?\d[-/]\d\d?','\d\d?[-/]\d?\d[-/]\d\d',\
+            '[Kk]emarin','\d\d[-/]\d?\d[-/]\d\d?', 
+            '[Hh]ari ini', '[Kk]emarin lusa', '[Ss]enin', '[Ss]elasa', '[Rr]abu', '[Kk]amis',\
+            '[Jj]um\'?at', '[Ss]abtu', '[Mm]inggu']
+        for pat in tanggalType:
+            self.tanggal = re.findall(pat, text)
+            if(len(self.tanggal) != 0):
+                break
+        if(findAll):
+            return self.tanggal
+        return self.tanggal[0]
 
-    def findJumlah(self):
-        return self.jumlah
+    def findJumlah(self, findAll = True):
+
+        jumlahType = ['\d+ [Oo]rang', '\d+ [Kk]orban', '\d+ [Pp]enderita', '\d+ [Jj]iwa']
+        for pat in jumlahType:
+            self.jumlah = re.findall(pat, text)
+            if(len(self.jumlah) != 0):
+                self.jumlah =  re.findall('\d+ ', self.jumlah[0])
+                break
+        if(findAll):
+            return self.jumlah
+        return self.jumlah[0]
 
     def solver(self, findAll = True):
-        self.findPattern(findAll)
-        self.findJumlah()
-        self.findTanggal()
+        a = self.findPattern(findAll)
+        if(self.hasPattern()):
+            b = self.findJumlah(findAll)
+            c = self.findTanggal(findAll)
+        return a, b, c
 
     def showResIdx(self):
         return self.resultIdx
@@ -43,6 +64,7 @@ class Matcher:
         return len(self.resultIdx) > 0
 
     def writeSolution(self):
+        # for debugging 
         for i in self.resultIdx:
             print(i + '. ' + self.text[i:i+self.patLength])
 

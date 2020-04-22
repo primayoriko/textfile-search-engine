@@ -37,11 +37,10 @@ class FileData:
             matcher.solver()
             if(matcher.hasPattern()):
                 newEntry = FileData.ResultEntry(i, matcher.getJumlah(), matcher.getTanggal())
-                self.result.append(i)
+                self.result.append(newEntry)
 
         self.nResult = len(self.result)
         if(self.nResult != 0):
-            
             return self
 
     def getResultText(self):
