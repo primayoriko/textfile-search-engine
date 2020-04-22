@@ -1,4 +1,4 @@
-# Simple Search Engine 
+# TextFile Search Engine 
 ## Description
 ------------
 Simple Web-based News Search Engine from Text File using Booyer-Moore, KMP algorithm and RegEx with Flask Server.
@@ -19,7 +19,7 @@ You can install virtualenv by executing **install_venv.bat**, and when inside vi
 2. open shell (cmd/powershell) and change directory to **env/Script**.
 3. Execute
     
-            activate
+        activate
     to run virtualenv.
 4. Execute
       
